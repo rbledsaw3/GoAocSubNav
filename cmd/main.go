@@ -12,10 +12,16 @@ func (f *Foo) thisIsOnFoo() error {
     return fmt.Errorf("This is an error from Foo")
 }
 
+func CreateFoo(fail bool) (*Foo, error) {
+    if fail {
+        return Foo{}, fmt.Errorf("Failed to create Foo")
+    }
+    return &Foo{}, nil
+}
 
 func main(){
-    err := returnsError(5)
-    foo := Foo{}
-
-    foo.thisIsOnFoo();
+    foo, err := CreateFoo(false)
+    if err != nil {
+        return nil, err
+    }
 }
