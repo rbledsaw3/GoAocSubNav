@@ -1,27 +1,37 @@
 package main
 
-import "fmt"
-
-func returnsError(value int) error {
-    return fmt.Errorf("This is an error with value %v", value)
+import {
+    "fmt"
+    "errors"
 }
 
-type Foo struct { }
-
-func (f *Foo) thisIsOnFoo() error {
-    return fmt.Errorf("This is an error from Foo")
+func example() error {
+    return fmt.Errorf("here is an error with a string");
 }
 
-func CreateFoo(fail bool) (*Foo, error) {
-    if fail {
-        return Foo{}, fmt.Errorf("Failed to create Foo")
+func otherExample() error {
+    return errors.New("here is an error, but with errors");
+}
+
+func exampleNoError() error {
+    return nil;
+}
+
+func exampleWithData(should bool) (*Thing, error) {
+    if should {
+        return &Thing{}, nil;
     }
-    return &Foo{}, nil
+    return nil, fmt.Errorf("nice try, guy");
 }
 
-func main(){
-    foo, err := CreateFoo(false)
+func main() {
+    err := example();
     if err != nil {
-        return nil, err
+        fmt.Println(err);
+    }
+
+    _, err = exampleWithData(true);
+    if err != nil {
+        fmt.Println(err);
     }
 }
