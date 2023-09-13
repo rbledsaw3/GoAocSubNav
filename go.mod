@@ -1,3 +1,3 @@
-module github.com/rbledsaw3/ProjectorCLIGo
+module github.com/rbledsaw3/GoAoCSubNav
 
 go 1.20
