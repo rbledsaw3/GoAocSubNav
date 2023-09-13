@@ -1,37 +1,61 @@
 package main
 
-import {
+import (
+    "strings"
+    "strconv"
+    "log"
     "fmt"
-    "errors"
+)
+
+func getInput() string {
+    return `forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2`;
 }
 
-func example() error {
-    return fmt.Errorf("here is an error with a string");
+type Point struct {
+    x int
+    y int
 }
 
-func otherExample() error {
-    return errors.New("here is an error, but with errors");
-}
-
-func exampleNoError() error {
-    return nil;
-}
-
-func exampleWithData(should bool) (*Thing, error) {
-    if should {
-        return &Thing{}, nil;
+func parseLine(line string) Point {
+    parts := strings.Split(line, " ")
+    amount, err := strconv.Atoi(parts[1])
+    if err != nil {
+        log.Fatal("this should never happen")
     }
-    return nil, fmt.Errorf("nice try, guy");
+
+    if parts[0] == "forward" {
+        return Point{
+            x: amount,
+            y: 0,
+        }
+    } else if parts[0] == "up" {
+        return Point{
+            x: 0,
+            y: -amount,
+        }
+    }
+
+    return Point{
+        x: 0,
+        y: amount,
+    }
 }
 
 func main() {
-    err := example();
-    if err != nil {
-        fmt.Println(err);
+    lines := strings.Split(getInput(), "\n")
+
+    pos := Point{0, 0}
+
+    for _, line := range lines {
+        amount := parseLine(line)
+        pos.x += amount.x
+        pos.y += amount.y
     }
 
-    _, err = exampleWithData(true);
-    if err != nil {
-        fmt.Println(err);
-    }
+    fmt.Printf("point: %+v", pos);
 }
